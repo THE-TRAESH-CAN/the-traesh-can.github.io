@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Events from '../views/Events.vue'
+import Twitch from '../views/Twitch.vue'
 import Settings from '../views/Settings.vue'
 //import FAQ from '../views/FAQ.vue'
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/events',
     name: 'Events',
     component: Events
+  },
+  {
+    path: '/twitch',
+    name: 'Twitch',
+    component: Twitch
   },
   {
     path: '/settings',

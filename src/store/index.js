@@ -119,6 +119,15 @@ export default new Vuex.Store({
             })
             //updatePost(state)
         },
+        EditEventMatch: (state, payload) => {
+            const { event, matches } = payload
+            state.events = state.events.map((entry) => {
+                if (entry.event == event) {
+                    entry.matches = matches
+                }
+                return entry
+            })
+        },
         RemoveEvent: (state, eventName) => {
             state.events = state.events.filter((entry) => {
                 return entry.event != eventName

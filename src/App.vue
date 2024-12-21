@@ -15,6 +15,9 @@
             <v-btn :to="'/events'" text>
                 <span class="mr-2">Events</span>
             </v-btn>
+            <v-btn :to="'/twitch'" text>
+                <span class="mr-2">Twitch</span>
+            </v-btn>
             <v-btn :to="'/settings'" text>
                 <span class="mr-2">Settings</span>
             </v-btn>
@@ -36,23 +39,26 @@
 </template>
 
 <script>
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+import {Chat} from 'twitch-js';
 //import axios from "axios"
 export default {
     name: 'App',
     created() {
-        //this.twitchChat = new Chat({})
-        /*
+        this.twitchChat = new Chat({})
+        
         this.twitchChat.connect().then(() => {
             this.twitchChat.on("*", (data) => {
                 
                 console.log(Object.keys(data))
                 const { message, username } = data
+
+                if (message.toLowerCase().startsWith("!pword"))
+                    this.$TRAESH.$emit("twitchVote", {message, username})
                 console.log({ message, username })
                 
             })
         })
-        */
-        /*
         this.$TRAESH.$on("twitchConnect", async (channel) => {
             if (this.twitchChat._getChannels().length > 0) {
                 await this.leaveChannels()
@@ -60,10 +66,7 @@ export default {
             this.twitchConnect(channel)
         })
 
-        */
-
         this.reconnectSock()
-        /*global webkitSpeechRecognition*/
 
         this.speechListener(true)
     },
@@ -99,7 +102,8 @@ export default {
             return {res: {transcript: ""}, final:false}
         },
         speechListener(interimResults = false) {
-            this.speech = new webkitSpeechRecognition
+            console.log("AAAAAAAAAAAAAAAAA")
+            this.speech = new SpeechRecognition
             this.speech.continuous = true
             this.speech.interimResults = interimResults
             this.speech.lang = this.lang
