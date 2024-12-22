@@ -2,9 +2,20 @@
     <v-container fluid>
         <v-card>
             <v-toolbar color="deep-purple" flat>
-                <v-toolbar-title>
-                    <v-icon :color="iconColor">fab fa-twitch</v-icon>Twitch Settings
-                </v-toolbar-title>
+                <v-container fluid>
+                    <v-row>
+                        <v-col cols="10">
+                            <v-toolbar-title>
+                                <v-icon :color="iconColor">fab fa-twitch</v-icon>Twitch Settings
+                            </v-toolbar-title>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn @click="copyEvents" block bottom x-large>
+                                <span class="mr-2">COPY EVENTS</span>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-toolbar>
             <v-card-text>
                 <v-row>
@@ -218,6 +229,25 @@ export default {
             this.lastVoteWinners = events
             this.votes = new Map()
             this.voting = false
+        },
+        copyEvents(){
+            let text = "```ml\n"
+            this.enabledEvents.forEach(event => {
+                text += `${event.event} : "${event.matches.join(", ")}"\n`
+            })
+            text += "\n```"
+            this.$copyText(text).then(() => {
+                console.log("copied")
+            }, () => {
+                console.log("failed to copy")
+            })
+
+        },
+        onCopy(){
+            console.log("COPY SUCC")
+        },
+        onCopyError(){
+            console.log("COPY FAIL")
         }
     }
 }

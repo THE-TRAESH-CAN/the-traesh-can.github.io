@@ -5,7 +5,9 @@ import vuetify from './plugins/vuetify'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import store from './store'
-
+import VueClipboard from 'vue-clipboard2'
+VueClipboard.config.autoSetContainer = true
+Vue.use(VueClipboard)
 Vue.config.productionTip = false
 const garbage = new Vue()
 Vue.prototype.$TRAESH = garbage
