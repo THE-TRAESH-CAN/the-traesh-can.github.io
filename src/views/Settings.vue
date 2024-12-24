@@ -11,6 +11,17 @@
           @change="ChangeLocale">
 
         </v-select>
+        
+        <v-row>
+          <v-col cols="3" >
+            <v-text-field label="WEBHOOK URL" v-model="webhookURL" outlined></v-text-field>
+          </v-col>
+          <v-col cols="2">
+            <v-btn @click="UpdateWebhookURL" block bottom x-large>
+            <span class="mr-2">Update</span>
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-btn :loading="resetting" :disabled="resetting" color="error" @click="ResetToDefault">Reset to Default</v-btn>
       </v-card-text>
     </v-card>
@@ -24,6 +35,7 @@ export default {
     return {
       selected: "en-US",
       resetting: false,
+      webhookURL: "",
       tags: [
         { id: "ar-SA", region: "Arabic Saudi Arabia" },
         { id: "bn-BD", region: "Bangla Bangladesh" },
@@ -83,6 +95,7 @@ export default {
   },
   created() {
     this.selected = this.$store.state.lang
+    this.webhookURL= this.$store.state.webhookURL
   },
   methods: {
     ChangeLocale() {
@@ -94,6 +107,9 @@ export default {
       setTimeout(() => {
         this.resetting = false
       }, 500);
+    },
+    UpdateWebhookURL() {
+        this.$store.commit("UpdateWebhookURL", this.webhookURL)
     }
   }
 }

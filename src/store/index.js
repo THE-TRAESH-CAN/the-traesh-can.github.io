@@ -5,7 +5,10 @@ const vuexLocal = new VuexPersistence({
     storage: window.localStorage,
     reducer: (state) => ({
         events: state.events,
-        lang: state.lang
+        lang: state.lang,
+        blacklist: state.blacklist,
+        selectedEvents: state.selectedEvents,
+        webhookURL: state.webhookURL
     })
 
 })
@@ -84,11 +87,20 @@ export default new Vuex.Store({
         twitchMaxMatchesPerUser: 3,
         twitchPoll: new Map(),
         transcript: [],
-        lang: "en-US"
+        blacklist: [],
+        selectedEvents: [],
+        lang: "en-US",
+        webhookURL: ""
     },
     getters: {
+        allEvents: (state) => {
+            return state.events.sort((a, b) => a.event.localeCompare(b.event))
+        },
         enabledEvents: (state) => {
             return state.events.filter(v => v.enabled).sort((a, b) => a.event.localeCompare(b.event))
+        },
+        selectedEvents: (state) => {
+            return state.selectedEvents
         }
     },
     mutations: {
@@ -124,6 +136,7 @@ export default new Vuex.Store({
             state.events = state.events.map((entry) => {
                 if (entry.event == event) {
                     entry.matches = matches
+                    entry.enabled = matches.length > 0
                 }
                 return entry
             })
@@ -147,9 +160,27 @@ export default new Vuex.Store({
                 state.transcript.shift()
             }
         },
+        UpdateWebhookURL: (state, payload) => {
+            state.webhookURL = payload
+        },
+        UpdateBlacklist: (state, payload) => {
+            const idx = state.blacklist.indexOf(payload)
+            if (idx === -1) {
+                state.blacklist.push(payload)
+            }
+            else {
+                state.blacklist.splice(idx, 1)
+            }
+        },
+        UpdateSelectedEvent: (state, payload) => {
+            state.selectedEvents = payload
+        },
         Reset: (state) => {
             state.events = JSON.parse(JSON.stringify(defaultEvents))
             state.lang = "en-US"
+            state.webhookURL = ""
+            state.blacklist = []
+            state.selectedEvents = []
         }
     },
     actions: {

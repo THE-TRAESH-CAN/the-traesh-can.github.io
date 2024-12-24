@@ -4,14 +4,20 @@
             <v-toolbar color="deep-purple" flat>
                 <v-container fluid>
                     <v-row>
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-toolbar-title>
                                 <v-icon :color="iconColor">fab fa-twitch</v-icon>Twitch Settings
                             </v-toolbar-title>
                         </v-col>
                         <v-col cols="1">
-                            <v-btn @click="copyEvents" block bottom x-large>
+                            <v-btn @click="copyEvents" block bottom >
                                 <span class="mr-2">COPY EVENTS</span>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="1"></v-col>
+                        <v-col cols="1">
+                            <v-btn v-if="webhookURL" @click="sendWebhook" block bottom >
+                                <span class="mr-2">TO DISCORD</span>
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -35,10 +41,11 @@
 
                     <v-row>
                         <v-col cols="3">
-                            <v-checkbox v-for="item in enabledEvents" :key="item.event"
+                            <v-checkbox v-for="item in allEvents" :key="item.event"
                             v-model="selectedEvents"
                             :label="item.event"
                             :value="item.event"
+                            @change="UpdateSelectedEvent"
                             ></v-checkbox>
                         </v-col>
                         <v-divider vertical></v-divider>
@@ -109,7 +116,7 @@
 </template>
 
 <script>
-
+import axios from 'axios';
 export default {
     name: 'Twitch',
     data() {
@@ -119,9 +126,7 @@ export default {
             loading: false,
             votingTime: 60,
             voting: false,
-            selectedEvents: [],
             blacklistWord: "",
-            blacklist: [],
             votes: new Map(),
             range:[3,128],
             lastVoteWinners: {},
@@ -135,12 +140,19 @@ export default {
         })
         this.$TRAESH.$on("twitchVote", (e) => {
             if (!this.voting) {return}
-            this.handleVote(e)
+            this.handleVote({username: e.username, message: e.message.split(" ").filter(c => c).join(" ").trim()})
             console.log(e)
         })
         console.log("twitch beforecreate")
     },
     computed: {
+        selectedEvents: {
+            get() {
+                return this.$store.getters.selectedEvents
+            },
+            set() {
+            }
+        },
         iconColor() {
             if (this.connected) {
                 return "green accent-3"
@@ -148,6 +160,9 @@ export default {
             else {
                 return "red lighten-1"
             }
+        },
+        allEvents() {
+            return this.$store.getters.allEvents
         },
         enabledEvents() {
             return this.$store.getters.enabledEvents
@@ -163,12 +178,22 @@ export default {
         },
         winners() {
             return Object.keys(this.lastVoteWinners)
+        },
+        webhookURL() {
+            return this.$store.state.webhookURL
+        },
+        blacklist() {
+            return this.$store.state.blacklist
         }
     },
     methods: {
         connect() {
             this.loading = true
             this.$TRAESH.$emit("twitchConnect", this.channelName.toLowerCase())
+        },
+        UpdateSelectedEvent(e) {
+            console.log({e})
+            this.$store.commit("UpdateSelectedEvent", e)
         },
         startVoting() {
             this.voting = true;
@@ -182,7 +207,7 @@ export default {
             }, 1000);
         },
         AddBlacklistWord() {
-            this.blacklist.push(this.blacklistWord)
+            this.$store.commit("UpdateBlacklist", this.blacklistWord)
         },
         handleVote(e){
             const {message, username} = e
@@ -201,13 +226,13 @@ export default {
             const events = {}
             const tally = new Map()
             this.votes.forEach((word, p) => {
-
-                const [event, username] = p
-                if (!tally.has([event, word])) {
-                    tally.set([event, word], username)
+                const [event, username] = p.split("-")
+                const key = `${event}-${word}`
+                if (!tally.has(key)) {
+                    tally.set(key, [username])
                 }
                 else {
-                    tally.get([event, word]).push(username)
+                    tally.get(key).push(username)
                 }
             })
             this.selectedEvents.forEach((event) => {
@@ -215,16 +240,16 @@ export default {
             })
 
             tally.forEach((v, k) => {
-                const votes = v.length
+                const count = v.length
                 const [event, word] = k
-                if (votes > events[event].votes) {
-                    events[event] = {votes, match: word}
+                if (count > events[event].votes) {
+                    events[event] = {votes: count, match: word}
                 }
             })
             for(const key of Object.keys(events)) {
                 const event = key
                 const matches = [events[key].match]
-                this.$store.commit("EditEventMatch", {event, matches} )
+                this.$store.commit("EditEventMatch", {event, matches: matches[0] ? matches : []} )
             }
             this.lastVoteWinners = events
             this.votes = new Map()
@@ -248,6 +273,46 @@ export default {
         },
         onCopyError(){
             console.log("COPY FAIL")
+        },
+        sendWebhook()
+        {
+            let fields = [
+                { name:"1", value: "", inline:true},
+                { name:"2", value: "", inline:true},
+                { name:"3", value: "", inline:true}
+            ]
+            let count = 0
+            this.enabledEvents.forEach(event => {
+                let text = `**${event.event}**\n${event.matches.map(w => ("* " + w)).join("\n")}\n`
+                fields[count].value += text
+                count ++
+                if (count == 3) { count = 0}
+            })
+            console.log(fields)
+            console.log(`${fields[0].value.length} ${fields[1].value.length} ${fields[2].value.length}`)
+            const data = {
+            "content": "",
+            "tts": false,
+            "embeds": [
+                    {
+                    "description": "",
+                    "fields": fields
+                    }
+                ]
+            }
+            let config = {
+                method: "POST",
+                url: this.webhookURL,
+                headers: { "Content-Type": "application/json" },
+                data
+            }
+            axios(config).then(() => {
+                console.log("Webhook SENT")
+            },
+            () => {
+                console.log("Failed to send webhook")
+            })
+
         }
     }
 }
