@@ -153,6 +153,14 @@ export default {
             set() {
             }
         },
+        uncasedEvents () {
+            const events = {}
+            this.selectedEvents.forEach(event => {
+                events[event] = event
+                events[event.toLowerCase()] = event
+            })
+            return events
+        },
         iconColor() {
             if (this.connected) {
                 return "green accent-3"
@@ -211,7 +219,8 @@ export default {
         },
         handleVote(e){
             const {message, username} = e
-            const [command, event, ...msg] = message.split(" ")
+            const [command, userevent, ...msg] = message.split(" ")
+            const event = this.uncasedEvents[userevent] || ""
             const word = msg.join(" ").toLowerCase()
             const length = word.length
             if (this.selectedEvents.indexOf(event) === -1 || typeof(command) == "undefined" || typeof(event) == "undefined" || msg.length === 0) {
@@ -220,7 +229,7 @@ export default {
             if(length < this.minWordLength || length > this.maxWordLength || this.blacklist.indexOf(word) > -1) {
                 return
             }
-            this.votes.set([event, username], word)
+            this.votes.set(`${event}-${username}`, word)
         },
         endVoting() { // i need sleep
             const events = {}
@@ -241,7 +250,7 @@ export default {
 
             tally.forEach((v, k) => {
                 const count = v.length
-                const [event, word] = k
+                const [event, word] = k.split("-")
                 if (count > events[event].votes) {
                     events[event] = {votes: count, match: word}
                 }

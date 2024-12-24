@@ -102,7 +102,6 @@ export default {
             return {res: {transcript: ""}, final:false}
         },
         speechListener(interimResults = false) {
-            console.log("AAAAAAAAAAAAAAAAA")
             this.speech = new SpeechRecognition
             this.speech.continuous = true
             this.speech.interimResults = interimResults
@@ -113,6 +112,7 @@ export default {
                 const {res, final} = this.getConfidentest(event.results)
                 const compare = res.transcript.trim().toLowerCase()
                 if (final && this.lastReset !== compare) {
+                    this.matchEvent(res.transcript)
                     this.speech.alreadyMatched = []
                     this.lastReset = res.transcript.trim().toLowerCase()
                     this.$store.commit("pushTranscript", {transcript: res.transcript, matches: this.speech.wordMatches})
