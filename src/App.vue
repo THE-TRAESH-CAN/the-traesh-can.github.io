@@ -171,7 +171,8 @@ export default {
                     if (this.ws.readyState === WebSocket.OPEN) {
                         this.ws.send(JSON.stringify({
                             event: entry.event,
-                            duration: entry.duration*1000,
+                            sliders: entry.sliders,
+                            checkboxes: entry.activeCheckboxes,
                             transcript
                         }))
                     }
