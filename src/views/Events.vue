@@ -95,15 +95,27 @@
                                             </v-text-field>
                                         </v-col>
                                     </v-row>
+                                    <v-container fluid>
+                                        <v-row >
+                                            <v-col cols="4" v-for="box in tempEvent.checkboxes" :key="tempEvent.event+'-'+box">
+                                                <v-checkbox v-model="tempEvent.activeCheckboxes" :value="box" :label="box" @change="EditEvent"></v-checkbox>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
                                     <v-row>
-                                        <v-col>
+                                        <v-col cols="12" v-for="(slider, idx) in tempEvent.sliders" :key="tempEvent.event+'-'+slider.label">
                                             <v-slider
-                                                v-model="tempEvent.duration"
-                                                @change="SaveDuration"
-                                                label="Duration"
+                                                :key="tempEvent.event+'-'+slider.label"
+                                                v-model="tempEvent.sliders[idx].value"
+                                                @change="SaveSliderChange"
+                                                :label="slider.label"
+                                                :min="slider.min"
+                                                :max="slider.max"
                                                 thumb-label="always"
+                                                :step="slider.step || 1"
+                                                :tick-labels="slider.ticks || []"
+                                                :ticks="typeof(slider.ticks) !== 'undefined'"
                                             >
-
                                             </v-slider>
                                         </v-col>
                                     </v-row>
@@ -146,8 +158,8 @@ export default {
         }
     },
     methods: {
-        SaveDuration(newDuration){
-            this.tempEvent.duration = newDuration
+        SaveSliderChange(){
+            //this.tempEvent.duration = val
             this.EditEvent()
         },
         FastModeCb(event) {
