@@ -8,7 +8,9 @@ const vuexLocal = new VuexPersistence({
         lang: state.lang,
         blacklist: state.blacklist,
         selectedEvents: state.selectedEvents,
-        webhookURL: state.webhookURL
+        advancedBlacklist: state.advancedBlacklist,
+        webhookURL: state.webhookURL,
+        wordMap: state.wordMap
     })
 
 })
@@ -340,7 +342,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "SpikeDrinks", enabled: true, matches: ["spike"], activeCheckboxes: [], checkboxes: ["Lava", "Alcohol", "Acid", "Toxic", "Poly", "Random Poly", "Freezing Liquid"], sliders: [
+        event: "SpikeDrinks", enabled: true, matches: ["spike"], activeCheckboxes: [], checkboxes: ["Lava", "Alcohol", "Acid", "Toxic", "Poly", "Random Poly", "Freezing Liquid", "Purifying Powder"], sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
@@ -412,9 +414,11 @@ export default new Vuex.Store({
         twitchMatchMinLength: 4,
         twitchMaxMatchesPerUser: 3,
         twitchPoll: new Map(),
+        wordMap: {},
         transcript: [],
         blacklist: [],
         selectedEvents: [],
+        advancedBlacklist: false,
         lang: "en-US",
         webhookURL: ""
     },
@@ -427,6 +431,10 @@ export default new Vuex.Store({
         },
         selectedEvents: (state) => {
             return state.selectedEvents
+        },
+        wordMap: (state) => {
+            const words = state.wordMap
+            return [...Object.entries(words)].sort((a,b) => b[1] - a[1])
         }
     },
     mutations: {
@@ -477,6 +485,15 @@ export default new Vuex.Store({
         },
         pushTranscript: (state, payload) => {
             let text = payload.transcript
+            let words = text.toLowerCase().split(" ")
+            words.forEach(word => {
+                if (typeof(state.wordMap[word]) == "undefined") {
+                    Vue.set(state.wordMap, word, 1)
+                }
+                else {
+                    Vue.set(state.wordMap, word, state.wordMap[word] + 1)
+                }
+            })
             payload.matches.forEach(match => {
                 text = text.replaceAll(match, `<span class="red--text">${match}</span>`)
             });
@@ -503,12 +520,37 @@ export default new Vuex.Store({
         UpdateSelectedEvent: (state, payload) => {
             state.selectedEvents = payload
         },
+        UpdateAdvancedBlacklist: (state, payload) => {
+            state.advancedBlacklist = payload
+        },
+        ResetEvent: (state, key) => {
+            const events = JSON.parse(JSON.stringify(defaultEvents))
+
+            events.forEach(e => {
+                const { event, enabled, matches, sliders, checkboxes, activeCheckboxes } = e
+                if (event == key) {
+                    state.events = state.events.map((entry) => {
+                        if (entry.event == event) {
+                            entry.enabled = enabled
+                            entry.matches = matches
+                            entry.sliders = sliders
+                            entry.checkboxes = checkboxes
+                            entry.activeCheckboxes = activeCheckboxes
+                        }
+                        return entry
+                    })
+                }
+            })
+            
+        },
         Reset: (state) => {
             state.events = JSON.parse(JSON.stringify(defaultEvents))
             state.lang = "en-US"
             state.webhookURL = ""
+            state.wordMap = {}
             state.blacklist = []
             state.selectedEvents = []
+            state.advancedBlacklist = false
         }
     },
     actions: {

@@ -52,6 +52,10 @@
                                     <v-toolbar-title>{{ selectedEvent }}</v-toolbar-title>
                                     <v-spacer></v-spacer>
 
+                                    <v-btn icon text @click="ResetEvent()">
+                                        <span>Reset</span>
+                                    </v-btn>
+
                                     <v-btn icon text @click="RemoveEvent()">
                                         <v-icon>fas fa-trash-alt</v-icon>
                                     </v-btn>
@@ -202,6 +206,10 @@ export default {
             this.$store.commit("RemoveEvent", this.selectedEvent)
             this.selectedEvent = ""
             this.tempEvent = {}
+        },
+        ResetEvent() {
+            this.$store.commit("ResetEvent", this.selectedEvent)
+            this.selectedEvent = ""
         },
         EditEvent() {
             this.$store.commit("EditEvent", JSON.parse(JSON.stringify(this.tempEvent)))

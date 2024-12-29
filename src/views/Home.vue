@@ -12,6 +12,9 @@
             <p v-html="item.text"></p>
           </template>
         </v-virtual-scroll>
+        <v-container>
+          <span>{{ wordMap }}</span>
+        </v-container>
       </v-card-text>
     </v-card>
   </v-container>
@@ -23,7 +26,12 @@ export default {
   computed: {
     transcript() {
       return this.$store.state.transcript
+    },
+    wordMap() {
+      const words = this.$store.getters.wordMap
+      
+      return words.map(e => `${e[0]}: ${e[1]}`).join(" | ")
     }
-  },
+  }
 }
 </script>

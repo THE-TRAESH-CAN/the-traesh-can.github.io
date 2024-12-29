@@ -53,7 +53,7 @@
                             <v-container fluid>
                                 <v-row>
                                     <v-slider hide-details thumb-label="always" min="1" max="120" label="Voting time" v-model="votingTime"></v-slider>
-                                    <v-range-slider hide-details thumb-label="always" min="3" max="300" v-model="range" label="Word Length"></v-range-slider>
+                                    <v-range-slider hide-details thumb-label="always" min="3" max="300" v-model="range" step="1" label="Word Length"></v-range-slider>
                                     <v-col cols="3">
                                         <v-btn @click="startVoting" block bottom x-large :loading="voting">
                                             <span class="mr-2">START VOTING</span>
@@ -64,8 +64,15 @@
                             <v-divider></v-divider>
                             <v-container fluid>
                                 <v-row>
-                                    <v-col>
+                                    <v-col cols="9">
                                         <h1>BLACKLIST</h1>
+                                    </v-col>
+                                    <v-col cols="3">
+                                        <v-checkbox 
+                                            v-model="advancedBlacklist"
+                                            label="Advanced Blacklist"
+                                            @change="UpdateAdvancedBlacklist"
+                                        ></v-checkbox>
                                     </v-col>
                                 </v-row>
                                     <v-row>
@@ -140,7 +147,7 @@ export default {
         })
         this.$TRAESH.$on("twitchVote", (e) => {
             if (!this.voting) {return}
-            this.handleVote({username: e.username, message: e.message.split(" ").filter(c => c).join(" ").trim()})
+            this.handleVote({username: e.username, message: e.message.toLowerCase().split(" ").filter(c => c).join(" ").trim()})
             console.log(e)
         })
         console.log("twitch beforecreate")
@@ -151,6 +158,14 @@ export default {
                 return this.$store.getters.selectedEvents
             },
             set() {
+            }
+        },
+        advancedBlacklist: {
+            get() {
+                return this.$store.state.advancedBlacklist
+            },
+            set() {
+
             }
         },
         uncasedEvents () {
@@ -200,8 +215,11 @@ export default {
             this.$TRAESH.$emit("twitchConnect", this.channelName.toLowerCase())
         },
         UpdateSelectedEvent(e) {
-            console.log({e})
             this.$store.commit("UpdateSelectedEvent", e)
+        },
+        UpdateAdvancedBlacklist(e) {
+            console.log({e})
+            this.$store.commit("UpdateAdvancedBlacklist", e)
         },
         startVoting() {
             this.voting = true;
@@ -221,13 +239,21 @@ export default {
             const {message, username} = e
             const [command, userevent, ...msg] = message.split(" ")
             const event = this.uncasedEvents[userevent] || ""
-            const word = msg.join(" ").toLowerCase()
+            const word = msg.join(" ")
             const length = word.length
             if (this.selectedEvents.indexOf(event) === -1 || typeof(command) == "undefined" || typeof(event) == "undefined" || msg.length === 0) {
                 return
             }
             if(length < this.minWordLength || length > this.maxWordLength || this.blacklist.indexOf(word) > -1) {
                 return
+            }
+            if (this.advancedBlacklist) {
+                const flagged = word.split(" ").some(word => {
+                    return this.blacklist.some(entry => entry == word)
+                })
+                if (flagged) {
+                    return
+                }
             }
             this.votes.set(`${event}-${username}`, word)
         },
