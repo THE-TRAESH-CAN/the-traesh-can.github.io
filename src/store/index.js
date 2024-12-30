@@ -10,7 +10,9 @@ const vuexLocal = new VuexPersistence({
         selectedEvents: state.selectedEvents,
         advancedBlacklist: state.advancedBlacklist,
         webhookURL: state.webhookURL,
-        wordMap: state.wordMap
+        wordMap: state.wordMap,
+        version: state.version,
+        test: state.test
     })
 
 })
@@ -18,7 +20,7 @@ Vue.use(Vuex)
 
 const defaultEvents = [
     {
-        event: "Garbage", enabled: true, matches: ["garbage"], activeCheckboxes: [], checkboxes: ["Chairs", "Boxes", "Minecarts", "Stones", "Oil Barrels", "TNT Boxes", "Toxic Barrels", "Acid Barrels", "Propane Tanks"], sliders: [
+        event: "Garbage", enabled: true, matches: ["garbage"], activeCheckboxes: [], checkboxes: ["Chairs", "Boxes", "Minecarts", "Stones", "Oil Barrels", "TNT Boxes", "Toxic Barrels", "Acid Barrels", "Propane Tanks"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 10, key: "min" },
@@ -26,7 +28,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Zoo", enabled: true, matches: ["zoo"], activeCheckboxes: [], checkboxes: ["Deers", "Ducks", "Rats", "Wolves", "Elks", "Frogs", "Sheep"], sliders: [
+        event: "Zoo", enabled: true, matches: ["zoo"], activeCheckboxes: [], checkboxes: ["Deers", "Ducks", "Rats", "Wolves", "Elks", "Frogs", "Sheep", "Radioactive Swamp Bee"], version: 69, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -34,7 +36,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Bee", enabled: true, matches: ["bee"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Bee", enabled: true, matches: ["bee"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -42,13 +44,13 @@ const defaultEvents = [
         ]
     },
     {
-        event: "GoldTouchy", enabled: true, matches: ["money", "gold"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "GoldTouchy", enabled: true, matches: ["money", "gold"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Acid", enabled: true, matches: ["ass", "acid"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Acid", enabled: true, matches: ["ass", "acid"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -56,7 +58,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Hentai", enabled: true, matches: ["weeb", "tentacle", "weave", "waves"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Hentai", enabled: true, matches: ["weeb", "tentacle", "weave", "waves"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -64,7 +66,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "WormLauncher", enabled: true, matches: ["worm", "wiggle"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "WormLauncher", enabled: true, matches: ["worm", "wiggle"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -72,7 +74,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Ukko", enabled: true, matches: ["old"], activeCheckboxes: [], checkboxes: ["Ukko", "Bicc Ukko", "Thunder Spirit"], sliders: [
+        event: "Ukko", enabled: true, matches: ["old"], activeCheckboxes: [], checkboxes: ["Ukko", "Bicc Ukko", "Thunder Spirit"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -80,7 +82,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Steve", enabled: true, matches: ["steve", "bone"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Steve", enabled: true, matches: ["steve", "bone"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -88,13 +90,13 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Trip", enabled: true, matches: ["shroom"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Trip", enabled: true, matches: ["shroom"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 300, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
         ]
     },
     {
-        event: "Tanks", enabled: true, matches: ["thanks"], activeCheckboxes: [], checkboxes: ["Turrets", "Tanks", "Rocket Tank", "Laser Tank", "Healer Bot", "Shield Bot", "Bot"], sliders: [
+        event: "Tanks", enabled: true, matches: ["thanks"], activeCheckboxes: [], checkboxes: ["Turrets", "Tanks", "Rocket Tank", "Laser Tank", "Healer Bot", "Shield Bot", "Bot"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -102,7 +104,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Cocktail", enabled: true, matches: ["flask"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Cocktail", enabled: true, matches: ["flask"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -110,13 +112,13 @@ const defaultEvents = [
         ]
     },
     {
-        event: "LavaShift", enabled: true, matches: ["is this one broken ? idk"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "LavaShift", enabled: true, matches: ["is this one broken ? idk"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Goblins", enabled: true, matches: ["nerds"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Goblins", enabled: true, matches: ["nerds"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -124,7 +126,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Toasters", enabled: true, matches: ["bread"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Toasters", enabled: true, matches: ["bread"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -132,31 +134,31 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Sweaty", enabled: true, matches: ["sweat"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Sweaty", enabled: true, matches: ["sweat"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Byebye", enabled: true, matches: ["goodbye"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Byebye", enabled: true, matches: ["goodbye"], activeCheckboxes: [], checkboxes: ["Enemies"], version: 2, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "BlazeIt", enabled: true, matches: ["hot"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "BlazeIt", enabled: true, matches: ["hot"], activeCheckboxes: [], checkboxes: [], version: 3, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "ThisIsFine", enabled: true, matches: ["fire"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "ThisIsFine", enabled: true, matches: ["fire"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Coolio", enabled: true, matches: ["cold"], activeCheckboxes: [], checkboxes: ["Ice Spirit", "Ice Mage"], sliders: [
+        event: "Coolio", enabled: true, matches: ["cold"], activeCheckboxes: [], checkboxes: ["Ice Spirit", "Ice Mage"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -164,14 +166,14 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Twitch", enabled: true, matches: ["flum"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Twitch", enabled: true, matches: ["flum"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "DURATION" }
         ]
     },
     {
-        event: "Shrooms", enabled: true, matches: ["mushroom"], activeCheckboxes: [], checkboxes: ["Normal Shrooms", "Big Shrooms", "Giga Shrooms", "Tiny Shrooms"], sliders: [
+        event: "Shrooms", enabled: true, matches: ["mushroom"], activeCheckboxes: [], checkboxes: ["Normal Shrooms", "Big Shrooms", "Giga Shrooms", "Tiny Shrooms"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -179,7 +181,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Eggy", enabled: true, matches: ["egg"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Eggy", enabled: true, matches: ["egg"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -187,7 +189,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Raid", enabled: true, matches: ["raid"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Raid", enabled: true, matches: ["raid"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -195,14 +197,14 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Gamba", enabled: true, matches: ["gamba"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Gamba", enabled: true, matches: ["gamba"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Balance", min: 1, max: 5, hint: "RIGGED?", value: 3, key: "BALANCE", step: 1, ticks: ["Mostly Bad", "Kinda Bad", "Perfectly Balanced", "Kinda Good", "Mostly Good"] }
         ]
     },
     {
-        event: "HolyBomb", enabled: true, matches: ["holy"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "HolyBomb", enabled: true, matches: ["holy"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -211,7 +213,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "BeegSteve", enabled: true, matches: ["boned"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "BeegSteve", enabled: true, matches: ["boned"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -219,20 +221,20 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Cheapskate", enabled: true, matches: ["cheap"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Cheapskate", enabled: true, matches: ["cheap"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Wallet Change", min: 1, max: 10, hint: "RIGGED?", value: 5, key: "BALANCE", step: 1, ticks: ["-100%", "-75%", "-50%", "-25%", "-10%", "+10%", "+25%", "+50%", "+75%", "+100%"] }
         ]
     },
     {
-        event: "RogueBH", enabled: true, matches: ["black hole"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "RogueBH", enabled: true, matches: ["black hole"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Flend", enabled: true, matches: ["friend"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Flend", enabled: true, matches: ["friend"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -240,7 +242,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Cop", enabled: true, matches: ["robot"], activeCheckboxes: ["Robocop", "Hand Bot"], checkboxes: ["Robocop", "Assassin", "Hand Bot", "Lance Bot", "Flame Bot", "Ice Flame Bot"], sliders: [
+        event: "Cop", enabled: true, matches: ["robot"], activeCheckboxes: ["Robocop", "Hand Bot"], checkboxes: ["Robocop", "Assassin", "Hand Bot", "Lance Bot", "Flame Bot", "Ice Flame Bot"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -248,20 +250,20 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Loose", enabled: true, matches: ["chunk"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Loose", enabled: true, matches: ["chunk"], activeCheckboxes: [], checkboxes: [], version: 34, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
-            { label: "Earthquake Size", min: 1, max: 3, hint: "RIGGED? - Might crash if big?", value: 3, key: "BALANCE", step: 1, ticks: ["BICC QUAKE", "DOUBLE QUAKE", "NORMAL"] }
+            { label: "Earthquake Size", min: 1, max: 3, hint: "RIGGED? - Might crash if big?", value: 3, key: "BALANCE", step: 1, ticks: ["TSUNAMI", "AFTERSHOCK", "EARTHQUAKE"] }
         ]
     },
     {
-        event: "Grounded", enabled: true, matches: ["ground"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Grounded", enabled: true, matches: ["ground"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "PlayerGhost", enabled: true, matches: ["ghost"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "PlayerGhost", enabled: true, matches: ["ghost"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -269,7 +271,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "MoistMob", enabled: true, matches: ["frog"], activeCheckboxes: ["Frogs"], checkboxes: ["Big Frogs", "Frogs"], sliders: [
+        event: "MoistMob", enabled: true, matches: ["frog"], activeCheckboxes: ["Frogs"], checkboxes: ["Big Frogs", "Frogs"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -277,7 +279,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "RatKing", enabled: true, matches: ["chase"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "RatKing", enabled: true, matches: ["chase"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 10, key: "min" },
@@ -286,7 +288,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "DoughDeer", enabled: true, matches: ["deer"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "DoughDeer", enabled: true, matches: ["deer"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -295,7 +297,7 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Quack", enabled: true, matches: ["duck"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Quack", enabled: true, matches: ["duck"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -304,25 +306,25 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Blessed", enabled: true, matches: ["bless"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Blessed", enabled: true, matches: ["bless"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Cursed", enabled: true, matches: ["curse"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Cursed", enabled: true, matches: ["curse"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "BigLove", enabled: true, matches: ["love"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "BigLove", enabled: true, matches: ["love"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "HankHill", enabled: true, matches: ["propane"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "HankHill", enabled: true, matches: ["propane"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 4, key: "min" },
@@ -330,25 +332,25 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Antiquing", enabled: true, matches: ["antiquing"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Antiquing", enabled: true, matches: ["antiquing"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Yeet", enabled: true, matches: ["yeet"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Yeet", enabled: true, matches: ["yeet"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "SpikeDrinks", enabled: true, matches: ["spike"], activeCheckboxes: [], checkboxes: ["Lava", "Alcohol", "Acid", "Toxic", "Poly", "Random Poly", "Freezing Liquid", "Purifying Powder"], sliders: [
+        event: "SpikeDrinks", enabled: true, matches: ["spike"], activeCheckboxes: [], checkboxes: ["Lava", "Alcohol", "Acid", "Toxic", "Poly", "Random Poly", "Freezing Liquid", "Purifying Powder"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Follower", enabled: true, matches: ["follow"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Follower", enabled: true, matches: ["follow"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 1, key: "min" },
@@ -357,13 +359,13 @@ const defaultEvents = [
         ]
     },
     {
-        event: "AlchemicCircle", enabled: true, matches: ["alchemy"], activeCheckboxes: [], checkboxes: ["Void", "Oil", "Fire", "Blood", "Water", "Acid", "Alcohol", "Flummoxium", "Acceleratium", "Worm Attractor", "Ambrosia", "Concentrated Mana", "Teleportatium", "Healthium"], sliders: [
+        event: "AlchemicCircle", enabled: true, matches: ["alchemy"], activeCheckboxes: [], checkboxes: ["Void", "Oil", "Fire", "Blood", "Water", "Acid", "Alcohol", "Flummoxium", "Acceleratium", "Worm Attractor", "Ambrosia", "Concentrated Mana", "Teleportatium", "Healthium"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "WeHuffing", enabled: true, matches: ["huffing"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "WeHuffing", enabled: true, matches: ["huffing"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
             { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 5, key: "min" },
@@ -371,30 +373,34 @@ const defaultEvents = [
         ]
     },
     {
-        event: "Birthday", enabled: true, matches: ["birthday"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Birthday", enabled: true, matches: ["birthday"], activeCheckboxes: [], checkboxes: [], version: 2, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
-            { label: "Surprise", min: 1, max: 6, hint: "RIGGED?", value: 4, key: "BALANCE", step: 1, ticks: ["REAL Bad", "Real Bad", "Bad", "Good", "Really Good", "REALLY GOOD"] }
+            { label: "Surprise", min: 1, max: 6, hint: "RIGGED?", value: 4, key: "BALANCE", step: 1, ticks: ["UNHINGED", "Real Bad", "Bad", "Good", "Very Good", "REALLY GOOD"] }
         ]
     },
     {
-        event: "Berserk", enabled: true, matches: ["angry"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Berserk", enabled: true, matches: ["angry"], activeCheckboxes: [], checkboxes: ["Enemies"], version: 2, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "Nolla", enabled: true, matches: ["nolla"], activeCheckboxes: [], checkboxes: [], sliders: [
+        event: "Nolla", enabled: true, matches: ["nolla"], activeCheckboxes: [], checkboxes: [], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
     },
     {
-        event: "BackToTheBeginning", enabled: true, matches: ["back"], activeCheckboxes: [], checkboxes: ["Checkpoints"], sliders: [
+        event: "BackToTheBeginning", enabled: true, matches: ["back"], activeCheckboxes: [], checkboxes: ["Checkpoints"], version: 1, sliders: [
             { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
             { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
         ]
-    }
+    },
+    { event: "FuckMe", enabled: true, matches: ["fuck me"], checkboxes: [], activeCheckboxes: [], version: 1, sliders: [
+        { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
+        { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" }
+    ] }
 ]
 //import axios from "axios"
 /*
@@ -404,6 +410,17 @@ function updatePost(state) {
     })
 }
 */
+const latestVersion = 2
+const defaultState = {
+    version: 2,
+    wordMap: {},
+    transcript: [],
+    blacklist: [],
+    selectedEvents: [],
+    advancedBlacklist: false,
+    lang: "en-US",
+    webhookURL: ""
+}
 export default new Vuex.Store({
     state: {
         events: defaultEvents,
@@ -413,14 +430,15 @@ export default new Vuex.Store({
         twitchMatches: [],
         twitchMatchMinLength: 4,
         twitchMaxMatchesPerUser: 3,
-        twitchPoll: new Map(),
+        twitchPoll: new Map(),// Maps no worky here my guy
         wordMap: {},
         transcript: [],
         blacklist: [],
         selectedEvents: [],
         advancedBlacklist: false,
         lang: "en-US",
-        webhookURL: ""
+        webhookURL: "",
+        version: 1
     },
     getters: {
         allEvents: (state) => {
@@ -434,7 +452,7 @@ export default new Vuex.Store({
         },
         wordMap: (state) => {
             const words = state.wordMap
-            return [...Object.entries(words)].sort((a,b) => b[1] - a[1])
+            return [...Object.entries(words)].sort((a, b) => b[1] - a[1])
         }
     },
     mutations: {
@@ -449,7 +467,12 @@ export default new Vuex.Store({
                 }
             }
             if (exists) { return }
-            state.events.push({ event: eventName, enabled: true, matches: [] })
+            state.events.push({ event: eventName, enabled: true, matches: [], checkboxes: [], activeCheckboxes: [], version: latestVersion, sliders: [
+                { label: "Cooldown", min: 0, max: 999, hint: "How often can the event activate", value: 0, key: "COOLDOWN" },
+                { label: "Activation Limit", min: 0, max: 999, hint: "0 means infinite", value: 0, key: "LIMIT" },
+                { label: "Minimum Props", min: 1, max: 100, hint: "Minimum amount to spawn", value: 10, key: "min" },
+                { label: "Maximum Props", min: 1, max: 100, hint: "Maximum amount to spawn", value: 40, key: "max" }
+            ] })
             //updatePost(state)
         },
         EditEvent: (state, payload) => {
@@ -485,9 +508,9 @@ export default new Vuex.Store({
         },
         pushTranscript: (state, payload) => {
             let text = payload.transcript
-            let words = text.toLowerCase().split(" ")
+            let words = text.toLowerCase().trim().split(" ")
             words.forEach(word => {
-                if (typeof(state.wordMap[word]) == "undefined") {
+                if (typeof (state.wordMap[word]) == "undefined") {
                     Vue.set(state.wordMap, word, 1)
                 }
                 else {
@@ -541,7 +564,7 @@ export default new Vuex.Store({
                     })
                 }
             })
-            
+
         },
         Reset: (state) => {
             state.events = JSON.parse(JSON.stringify(defaultEvents))
@@ -551,6 +574,54 @@ export default new Vuex.Store({
             state.blacklist = []
             state.selectedEvents = []
             state.advancedBlacklist = false
+        },
+        VersionCheck: (state) => {
+            console.log("Anyone up checking they version ??????")
+            const ver = state.version || 0
+            if (latestVersion != ver) {
+                const defaultKeys = Object.keys(defaultState)
+                for (const key of defaultKeys) {
+                    const val = defaultState[key]
+                    console.log(`${key} : ${typeof (defaultState[key])} ${typeof (val)}`)
+                    if (typeof (state[key]) == "undefined" || typeof (val) != typeof (state[key])) {
+                        Vue.set(state, key, defaultState[key])
+                    }
+                }
+            }
+
+            state.events = state.events.map((event) => {
+                let ret = event
+                const needUpdate = defaultEvents.some((defEvent) => event.event == defEvent.event && event.version != defEvent.version)
+                if (needUpdate) {
+                    console.log(`please updoot ${event.event}`)
+                    const defaultEvent = defaultEvents.find(e => e.event == event.event)
+                    for (let slider of ret.sliders) {
+                        const sliderKey = slider.key
+                        //slider.KEY = LIMIT
+                        for (const defSlider of defaultEvent.sliders) {
+                            if (defSlider.key != sliderKey) {continue}
+                            const sliderKeys = Object.keys(defSlider)
+                            for(const key of sliderKeys) {
+                                const value = slider.value
+                                Vue.set(slider, key, defSlider[key])
+                                slider.value = value
+                                if (slider.value < slider.min) {
+                                    slider.value = slider.min
+                                }
+                                if (slider.value > slider.max) {
+                                    slider.value = slider.max
+                                }
+                            }
+                        }
+                    }
+                    ret.version = defaultEvent.version
+
+                    ret.checkboxes = defaultEvent.checkboxes
+                    ret.activeCheckboxes = ret.activeCheckboxes.filter(e => ret.checkboxes.indexOf(e) !== -1)
+                }
+                return ret
+            })
+            state.version = latestVersion
         }
     },
     actions: {

@@ -44,6 +44,9 @@ import {Chat} from 'twitch-js';
 //import axios from "axios"
 export default {
     name: 'App',
+    beforeCreate() {
+        this.$store.commit("VersionCheck")
+    },
     created() {
         this.twitchChat = new Chat({})
         

@@ -52,7 +52,7 @@
                         <v-col cols="9">
                             <v-container fluid>
                                 <v-row>
-                                    <v-slider hide-details thumb-label="always" min="1" max="120" label="Voting time" v-model="votingTime"></v-slider>
+                                    <v-slider hide-details thumb-label="always" min="1" max="360" label="Voting time" v-model="votingTime"></v-slider>
                                     <v-range-slider hide-details thumb-label="always" min="3" max="300" v-model="range" step="1" label="Word Length"></v-range-slider>
                                     <v-col cols="3">
                                         <v-btn @click="startVoting" block bottom x-large :loading="voting">
