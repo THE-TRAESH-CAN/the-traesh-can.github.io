@@ -249,7 +249,7 @@ export default {
             }
             if (this.advancedBlacklist) {
                 const flagged = word.split(" ").some(word => {
-                    return this.blacklist.some(entry => entry == word)
+                    return this.blacklist.some(entry => entry.includes(word))
                 })
                 if (flagged) {
                     return

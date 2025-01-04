@@ -25,9 +25,11 @@
                         <v-toolbar color="deep-purple" extended>
                             <v-toolbar-title>Events</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <template v-slot:extension>
-                                <v-text-field label="Search..." v-model="filterKey"></v-text-field>
-                            </template>
+                            <v-container style="max-height: 400px" class="overflow-y-auto">
+                                <template v-slot:extension>
+                                    <v-text-field label="Search..." v-model="filterKey"></v-text-field>
+                                </template>
+                            </v-container>
                         </v-toolbar>
 
                         <v-list dense nav>
