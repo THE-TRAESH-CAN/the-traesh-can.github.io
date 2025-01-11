@@ -40,7 +40,7 @@
 
 <script>
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-import {Chat} from 'twitch-js';
+import { Chat } from 'twitch-js';
 //import axios from "axios"
 export default {
     name: 'App',
@@ -49,17 +49,17 @@ export default {
     },
     created() {
         this.twitchChat = new Chat({})
-        
+
         this.twitchChat.connect().then(() => {
             this.twitchChat.on("*", (data) => {
-                
+
                 console.log(Object.keys(data))
                 const { message, username } = data
 
                 if (message.toLowerCase().startsWith("!pword"))
-                    this.$TRAESH.$emit("twitchVote", {message, username})
+                    this.$TRAESH.$emit("twitchVote", { message, username })
                 console.log({ message, username })
-                
+
             })
         })
         this.$TRAESH.$on("twitchConnect", async (channel) => {
@@ -100,9 +100,9 @@ export default {
         getConfidentest(results) {
             for (let index = results.length - 1; index >= 0; --index) {
                 const element = results[index];
-                if (element[0].confidence >= 0.7) { return {res:element[0], final: element.isFinal} }
+                if (element[0].confidence >= 0.7) { return { res: element[0], final: element.isFinal } }
             }
-            return {res: {transcript: ""}, final:false}
+            return { res: { transcript: "" }, final: false }
         },
         speechListener(interimResults = false) {
             this.speech = new SpeechRecognition
@@ -112,13 +112,13 @@ export default {
             this.speech.alreadyMatched = []
             this.speech.wordMatches = []
             this.speech.onresult = (event) => {
-                const {res, final} = this.getConfidentest(event.results)
+                const { res, final } = this.getConfidentest(event.results)
                 const compare = res.transcript.trim().toLowerCase()
                 if (final && this.lastReset !== compare) {
                     this.matchEvent(res.transcript)
                     this.speech.alreadyMatched = []
                     this.lastReset = res.transcript.trim().toLowerCase()
-                    this.$store.commit("pushTranscript", {transcript: res.transcript, matches: this.speech.wordMatches})
+                    this.$store.commit("pushTranscript", { transcript: res.transcript, matches: this.speech.wordMatches })
                     return
                 }
                 else if (final && this.lastReset === compare) {
