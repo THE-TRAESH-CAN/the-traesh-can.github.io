@@ -10,13 +10,13 @@
                             </v-toolbar-title>
                         </v-col>
                         <v-col cols="1">
-                            <v-btn @click="copyEvents" block bottom >
+                            <v-btn @click="copyEvents" block bottom>
                                 <span class="mr-2">COPY EVENTS</span>
                             </v-btn>
                         </v-col>
                         <v-col cols="1"></v-col>
                         <v-col cols="1">
-                            <v-btn v-if="webhookURL" @click="sendWebhook" block bottom >
+                            <v-btn v-if="webhookURL" @click="sendWebhook" block bottom>
                                 <span class="mr-2">TO DISCORD</span>
                             </v-btn>
                         </v-col>
@@ -33,7 +33,7 @@
                             <span class="mr-2">Connect</span>
                         </v-btn>
                     </v-col>
-                    
+
                 </v-row>
 
                 <v-divider></v-divider>
@@ -41,19 +41,17 @@
 
                     <v-row>
                         <v-col cols="3">
-                            <v-checkbox v-for="item in allEvents" :key="item.event"
-                            v-model="selectedEvents"
-                            :label="item.event"
-                            :value="item.event"
-                            @change="UpdateSelectedEvent"
-                            ></v-checkbox>
+                            <v-checkbox v-for="item in allEvents" :key="item.event" v-model="selectedEvents"
+                                :label="item.event" :value="item.event" @change="UpdateSelectedEvent"></v-checkbox>
                         </v-col>
                         <v-divider vertical></v-divider>
                         <v-col cols="9">
                             <v-container fluid>
                                 <v-row>
-                                    <v-slider hide-details thumb-label="always" min="1" max="360" label="Voting time" v-model="votingTime"></v-slider>
-                                    <v-range-slider hide-details thumb-label="always" min="3" max="300" v-model="range" step="1" label="Word Length"></v-range-slider>
+                                    <v-slider hide-details thumb-label="always" min="1" max="360" label="Voting time"
+                                        v-model="votingTime"></v-slider>
+                                    <v-range-slider hide-details thumb-label="always" min="3" max="300" v-model="range"
+                                        step="1" label="Word Length"></v-range-slider>
                                     <v-col cols="3">
                                         <v-btn @click="startVoting" block bottom x-large :loading="voting">
                                             <span class="mr-2">START VOTING</span>
@@ -68,24 +66,21 @@
                                         <h1>BLACKLIST</h1>
                                     </v-col>
                                     <v-col cols="3">
-                                        <v-checkbox 
-                                            v-model="advancedBlacklist"
-                                            label="Advanced Blacklist"
-                                            @change="UpdateAdvancedBlacklist"
-                                        ></v-checkbox>
+                                        <v-checkbox v-model="advancedBlacklist" label="Advanced Blacklist"
+                                            @change="UpdateAdvancedBlacklist"></v-checkbox>
                                     </v-col>
                                 </v-row>
-                                    <v-row>
-                                        <v-col cols="3" >
-                                            <v-text-field label="Blacklist" v-model="blacklistWord" outlined></v-text-field>
-                                        </v-col>
-                                        <v-col cols="2">
-                                            <v-btn @click="AddBlacklistWord" block bottom x-large :loading="loading">
-                                                <span class="mr-2">Add</span>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                    <span >{{ blacklist.join(", ") }}</span>
+                                <v-row>
+                                    <v-col cols="3">
+                                        <v-text-field label="Blacklist" v-model="blacklistWord" outlined></v-text-field>
+                                    </v-col>
+                                    <v-col cols="2">
+                                        <v-btn @click="AddBlacklistWord" block bottom x-large :loading="loading">
+                                            <span class="mr-2">Add</span>
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                <span>{{ blacklist.join(", ") }}</span>
                             </v-container>
                             <v-divider></v-divider>
                             <v-container>
@@ -109,12 +104,13 @@
                                 </v-row>
                                 <v-row>
                                     <v-col cols="4" v-for="evt in winners" :key="evt">
-                                        <p>{{ evt }} - {{ lastVoteWinners[evt].votes }} votes - {{ lastVoteWinners[evt].match }}</p>
+                                        <p>{{ evt }} - {{ lastVoteWinners[evt].votes }} votes - {{
+                                            lastVoteWinners[evt].match }}</p>
                                     </v-col>
                                 </v-row>
                             </v-container>
                         </v-col>
-                    </v-row>                    
+                    </v-row>
                 </v-container>
                 <v-spacer></v-spacer>
             </v-card-text>
@@ -135,7 +131,7 @@ export default {
             voting: false,
             blacklistWord: "",
             votes: new Map(),
-            range:[3,128],
+            range: [3, 128],
             lastVoteWinners: {},
             voteInterval: null
         }
@@ -146,8 +142,8 @@ export default {
             this.connected = true
         })
         this.$TRAESH.$on("twitchVote", (e) => {
-            if (!this.voting) {return}
-            this.handleVote({username: e.username, message: e.message.toLowerCase().split(" ").filter(c => c).join(" ").trim()})
+            if (!this.voting) { return }
+            this.handleVote({ username: e.username, message: e.message.toLowerCase().split(" ").filter(c => c).join(" ").trim() })
             console.log(e)
         })
         console.log("twitch beforecreate")
@@ -168,7 +164,7 @@ export default {
 
             }
         },
-        uncasedEvents () {
+        uncasedEvents() {
             const events = {}
             this.selectedEvents.forEach(event => {
                 events[event] = event
@@ -190,10 +186,10 @@ export default {
         enabledEvents() {
             return this.$store.getters.enabledEvents
         },
-        minWordLength(){
+        minWordLength() {
             return this.range[0]
         },
-        maxWordLength(){
+        maxWordLength() {
             return this.range[1]
         },
         hasWinners() {
@@ -218,7 +214,7 @@ export default {
             this.$store.commit("UpdateSelectedEvent", e)
         },
         UpdateAdvancedBlacklist(e) {
-            console.log({e})
+            console.log({ e })
             this.$store.commit("UpdateAdvancedBlacklist", e)
         },
         startVoting() {
@@ -235,16 +231,16 @@ export default {
         AddBlacklistWord() {
             this.$store.commit("UpdateBlacklist", this.blacklistWord)
         },
-        handleVote(e){
-            const {message, username} = e
+        handleVote(e) {
+            const { message, username } = e
             const [command, userevent, ...msg] = message.split(" ")
             const event = this.uncasedEvents[userevent] || ""
             const word = msg.join(" ")
             const length = word.length
-            if (this.selectedEvents.indexOf(event) === -1 || typeof(command) == "undefined" || typeof(event) == "undefined" || msg.length === 0) {
+            if (this.selectedEvents.indexOf(event) === -1 || typeof (command) == "undefined" || typeof (event) == "undefined" || msg.length === 0) {
                 return
             }
-            if(length < this.minWordLength || length > this.maxWordLength || this.blacklist.indexOf(word) > -1) {
+            if (length < this.minWordLength || length > this.maxWordLength || this.blacklist.indexOf(word) > -1) {
                 return
             }
             if (this.advancedBlacklist) {
@@ -274,26 +270,26 @@ export default {
                 }
             })
             this.selectedEvents.forEach((event) => {
-                events[event] = {match: "", votes: 0}
+                events[event] = { match: "", votes: 0 }
             })
 
             tally.forEach((v, k) => {
                 const count = v.length
                 const [event, word] = k.split("-")
                 if (count > events[event].votes) {
-                    events[event] = {votes: count, match: word}
+                    events[event] = { votes: count, match: word }
                 }
             })
-            for(const key of Object.keys(events)) {
+            for (const key of Object.keys(events)) {
                 const event = key
                 const matches = [events[key].match]
-                this.$store.commit("EditEventMatch", {event, matches: matches[0] ? matches : []} )
+                this.$store.commit("EditEventMatch", { event, matches: matches[0] ? matches : [] })
             }
             this.lastVoteWinners = events
             this.votes = new Map()
             this.voting = false
         },
-        copyEvents(){
+        copyEvents() {
             let text = "```ml\n"
             this.enabledEvents.forEach(event => {
                 text += `${event.event} : "${event.matches.join(", ")}"\n`
@@ -306,35 +302,34 @@ export default {
             })
 
         },
-        onCopy(){
+        onCopy() {
             console.log("COPY SUCC")
         },
-        onCopyError(){
+        onCopyError() {
             console.log("COPY FAIL")
         },
-        sendWebhook()
-        {
+        sendWebhook() {
             let fields = [
-                { name:"1", value: "", inline:true},
-                { name:"2", value: "", inline:true},
-                { name:"3", value: "", inline:true}
+                { name: "1", value: "", inline: true },
+                { name: "2", value: "", inline: true },
+                { name: "3", value: "", inline: true }
             ]
             let count = 0
             this.enabledEvents.forEach(event => {
                 let text = `**${event.event}**\n${event.matches.map(w => ("* " + w)).join("\n")}\n`
                 fields[count].value += text
-                count ++
-                if (count == 3) { count = 0}
+                count++
+                if (count == 3) { count = 0 }
             })
             console.log(fields)
             console.log(`${fields[0].value.length} ${fields[1].value.length} ${fields[2].value.length}`)
             const data = {
-            "content": "",
-            "tts": false,
-            "embeds": [
+                "content": "",
+                "tts": false,
+                "embeds": [
                     {
-                    "description": "",
-                    "fields": fields
+                        "description": "",
+                        "fields": fields
                     }
                 ]
             }
@@ -347,9 +342,9 @@ export default {
             axios(config).then(() => {
                 console.log("Webhook SENT")
             },
-            () => {
-                console.log("Failed to send webhook")
-            })
+                () => {
+                    console.log("Failed to send webhook")
+                })
 
         }
     }
