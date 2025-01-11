@@ -248,8 +248,11 @@ export default {
                 return
             }
             if (this.advancedBlacklist) {
+                if (msg[0].length < this.minWordLength) {
+                    return
+                }
                 const flagged = word.split(" ").some(word => {
-                    return this.blacklist.some(entry => entry.includes(word))
+                    return this.blacklist.some(entry => entry == word)
                 })
                 if (flagged) {
                     return
