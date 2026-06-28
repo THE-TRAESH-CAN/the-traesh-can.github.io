@@ -229,7 +229,12 @@ export default {
             }, 1000);
         },
         AddBlacklistWord() {
-            this.$store.commit("UpdateBlacklist", this.blacklistWord)
+            const word = this.blacklistWord.toLowerCase().trim()
+            if (word.length === 0) {
+                return
+            }
+            this.$store.commit("UpdateBlacklist", word)
+            this.blacklistWord = ""
         },
         handleVote(e) {
             const { message, username } = e
@@ -237,10 +242,14 @@ export default {
             const event = this.uncasedEvents[userevent] || ""
             const word = msg.join(" ")
             const length = word.length
+            const blacklist = this.blacklist
+                .map(entry => entry.toLowerCase().trim())
+                .filter(entry => entry.length > 0)
+            const isBlacklisted = word => blacklist.some(entry => word.includes(entry))
             if (this.selectedEvents.indexOf(event) === -1 || typeof (command) == "undefined" || typeof (event) == "undefined" || msg.length === 0) {
                 return
             }
-            if (length < this.minWordLength || length > this.maxWordLength || this.blacklist.indexOf(word) > -1) {
+            if (length < this.minWordLength || length > this.maxWordLength || isBlacklisted(word)) {
                 return
             }
             if (this.advancedBlacklist) {
@@ -248,7 +257,7 @@ export default {
                     return
                 }
                 const flagged = word.split(" ").some(word => {
-                    return this.blacklist.some(entry => entry == word)
+                    return isBlacklisted(word)
                 })
                 if (flagged) {
                     return
