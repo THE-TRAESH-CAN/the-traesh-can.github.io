@@ -246,7 +246,7 @@ export default {
                 .map(entry => entry.toLowerCase().trim())
                 .filter(entry => entry.length > 0)
             const isBlacklisted = word => blacklist.some(entry => word.includes(entry))
-            if (this.selectedEvents.indexOf(event) === -1 || typeof (command) == "undefined" || typeof (event) == "undefined" || msg.length === 0) {
+            if (command !== "!pword" || this.selectedEvents.indexOf(event) === -1 || typeof (event) == "undefined" || msg.length === 0) {
                 return
             }
             if (length < this.minWordLength || length > this.maxWordLength || isBlacklisted(word)) {
@@ -263,14 +263,14 @@ export default {
                     return
                 }
             }
-            this.votes.set(`${event}-${username}`, word)
+            this.votes.set(JSON.stringify([event, username]), word)
         },
         endVoting() { // i need sleep
             const events = {}
             const tally = new Map()
             this.votes.forEach((word, p) => {
-                const [event, username] = p.split("-")
-                const key = `${event}-${word}`
+                const [event, username] = JSON.parse(p)
+                const key = JSON.stringify([event, word])
                 if (!tally.has(key)) {
                     tally.set(key, [username])
                 }
@@ -284,7 +284,7 @@ export default {
 
             tally.forEach((v, k) => {
                 const count = v.length
-                const [event, word] = k.split("-")
+                const [event, word] = JSON.parse(k)
                 if (count > events[event].votes) {
                     events[event] = { votes: count, match: word }
                 }

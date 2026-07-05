@@ -532,9 +532,13 @@ export default new Vuex.Store({
             state.webhookURL = payload
         },
         UpdateBlacklist: (state, payload) => {
-            const idx = state.blacklist.indexOf(payload)
+            const word = payload.toLowerCase().trim()
+            if (word.length === 0) {
+                return
+            }
+            const idx = state.blacklist.findIndex(entry => entry.toLowerCase().trim() === word)
             if (idx === -1) {
-                state.blacklist.push(payload)
+                state.blacklist.push(word)
             }
             else {
                 state.blacklist.splice(idx, 1)
