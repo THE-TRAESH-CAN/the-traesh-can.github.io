@@ -58,6 +58,12 @@
                                         </v-btn>
                                     </v-col>
                                 </v-row>
+                                <v-row>
+                                    <v-col cols="3">
+                                        <v-checkbox v-model="countSymbols" label="Count Symbols"
+                                            @change="UpdateCountSymbols"></v-checkbox>
+                                    </v-col>
+                                </v-row>
                             </v-container>
                             <v-divider></v-divider>
                             <v-container fluid>
@@ -164,6 +170,14 @@ export default {
 
             }
         },
+        countSymbols: {
+            get() {
+                return this.$store.state.countSymbols
+            },
+            set() {
+
+            }
+        },
         uncasedEvents() {
             const events = {}
             this.selectedEvents.forEach(event => {
@@ -217,6 +231,9 @@ export default {
             console.log({ e })
             this.$store.commit("UpdateAdvancedBlacklist", e)
         },
+        UpdateCountSymbols(e) {
+            this.$store.commit("UpdateCountSymbols", e)
+        },
         startVoting() {
             this.voting = true;
             this.voteInterval = setInterval(() => {
@@ -241,7 +258,8 @@ export default {
             const [command, userevent, ...msg] = message.split(" ")
             const event = this.uncasedEvents[userevent] || ""
             const word = msg.join(" ")
-            const length = word.length
+            const countLetters = w => (w.match(/\p{L}/gu) || []).length
+            const length = this.countSymbols ? word.length : countLetters(word)
             const blacklist = this.blacklist
                 .map(entry => entry.toLowerCase().trim())
                 .filter(entry => entry.length > 0)
@@ -253,7 +271,7 @@ export default {
                 return
             }
             if (this.advancedBlacklist) {
-                if (msg[0].length < this.minWordLength) {
+                if ((this.countSymbols ? msg[0].length : countLetters(msg[0])) < this.minWordLength) {
                     return
                 }
                 const flagged = word.split(" ").some(word => {

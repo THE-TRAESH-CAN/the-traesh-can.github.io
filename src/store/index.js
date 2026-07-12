@@ -9,6 +9,7 @@ const vuexLocal = new VuexPersistence({
         blacklist: state.blacklist,
         selectedEvents: state.selectedEvents,
         advancedBlacklist: state.advancedBlacklist,
+        countSymbols: state.countSymbols,
         webhookURL: state.webhookURL,
         wordMap: state.wordMap,
         version: state.version,
@@ -410,14 +411,15 @@ function updatePost(state) {
     })
 }
 */
-const latestVersion = 2
+const latestVersion = 3
 const defaultState = {
-    version: 2,
+    version: 3,
     wordMap: {},
     transcript: [],
     blacklist: [],
     selectedEvents: [],
     advancedBlacklist: false,
+    countSymbols: false,
     lang: "en-US",
     webhookURL: ""
 }
@@ -436,6 +438,7 @@ export default new Vuex.Store({
         blacklist: [],
         selectedEvents: [],
         advancedBlacklist: false,
+        countSymbols: false,
         lang: "en-US",
         webhookURL: "",
         version: 1
@@ -550,6 +553,9 @@ export default new Vuex.Store({
         UpdateAdvancedBlacklist: (state, payload) => {
             state.advancedBlacklist = payload
         },
+        UpdateCountSymbols: (state, payload) => {
+            state.countSymbols = payload
+        },
         ResetEvent: (state, key) => {
             const events = JSON.parse(JSON.stringify(defaultEvents))
 
@@ -578,6 +584,7 @@ export default new Vuex.Store({
             state.blacklist = []
             state.selectedEvents = []
             state.advancedBlacklist = false
+            state.countSymbols = false
         },
         VersionCheck: (state) => {
             console.log("Anyone up checking they version ??????")
