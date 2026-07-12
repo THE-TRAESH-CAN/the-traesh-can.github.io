@@ -241,7 +241,8 @@ export default {
             const [command, userevent, ...msg] = message.split(" ")
             const event = this.uncasedEvents[userevent] || ""
             const word = msg.join(" ")
-            const length = word.length
+            const countLetters = w => (w.match(/\p{L}/gu) || []).length
+            const length = countLetters(word)
             const blacklist = this.blacklist
                 .map(entry => entry.toLowerCase().trim())
                 .filter(entry => entry.length > 0)
@@ -253,7 +254,7 @@ export default {
                 return
             }
             if (this.advancedBlacklist) {
-                if (msg[0].length < this.minWordLength) {
+                if (countLetters(msg[0]) < this.minWordLength) {
                     return
                 }
                 const flagged = word.split(" ").some(word => {
